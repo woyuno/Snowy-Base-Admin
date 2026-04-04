@@ -9,6 +9,23 @@
 - 更适合 AI / agent 持续协作开发
 - 在保留系统管理能力的前提下，降低理解和扩展成本
 
+## 先看哪里
+
+如果你的目标是让 AI 快速接手并继续生成代码，建议优先看：
+
+1. `AGENTS.md`
+2. `docs/template/doc-map.md`
+3. `docs/template/template-onboarding.md`
+4. `templates/backend-crud`
+5. `templates/frontend-crud`
+
+这套仓库的重点不是“展示功能”，而是让 AI 在最短时间内判断：
+
+- 新功能应该落到哪个 Maven 模块
+- 后端 CRUD 需要补哪些 Java 文件
+- 前端页面、API、菜单组件路径应该怎么联动
+- 改完之后最少要验证哪些命令和链路
+
 
 ## 技术栈
 
@@ -76,6 +93,26 @@ snowy
 - 定时任务
 - 后台首页与基础壳层
 
+## 模板资产
+
+当前仓库已经补齐一组专门服务于 vibecoding 的模板资产：
+
+### 文档
+
+- `docs/template/doc-map.md`
+- `docs/template/template-onboarding.md`
+- `docs/template/template-smoke-checklist.md`
+- `docs/template/backend-crud-example.md`
+- `docs/template/frontend-crud-example.md`
+- `docs/template/crud-module-checklist.md`
+
+### 真代码样板
+
+- `templates/backend-crud`
+- `templates/frontend-crud`
+
+这些文件不是给人“慢慢读懂”用的，而是给 AI 快速建立上下文、按现有模式续写模块用的。
+
 ## 扩展原则
 
 ### 新增后端能力
@@ -97,6 +134,14 @@ snowy
 - `src/views/sys`
 - `src/views/dev`
 - 或新的明确业务域目录
+
+AI 新增模块时，优先遵循以下落位规则：
+
+- 后端系统域能力进入 `snowy-system`
+- 后端开发支撑能力进入 `snowy-dev`
+- 后端认证能力进入 `snowy-auth`
+- 前端页面进入 `snowy-admin-web/src/views/<domain>`
+- 前端 API 进入 `snowy-admin-web/src/api/<domain>`
 
 ## 本地启动
 
@@ -155,6 +200,24 @@ npm run dev
 npm run build
 ```
 
+## 默认前后端联动事实
+
+下面这些事实对 AI 新增或修改模块时最重要：
+
+1. 后端接口直接挂在根路径，例如 `/sys/role/page`、`/dev/dict/add`
+2. 后端列表接口普遍返回 `CommonResult<Page<...>>`
+3. 后端写接口默认要补 `@CommonLog`
+4. 前端 API 统一通过 `src/api/**` 下的 `baseRequest(...)` 封装
+5. 前端按钮权限统一通过 `hasPerm(...)`
+6. 前端动态菜单组件映射依赖 `snowy-admin-web/src/store/menu.js`
+
+其中第 6 条尤其关键：
+
+- 菜单 `component` 含 `/` 时，映射到 `src/views/<component>.vue`
+- 菜单 `component` 不含 `/` 时，映射到 `src/views/<component>/index.vue`
+
+这意味着新增页面时，后端菜单里的 `component` 字段必须和前端真实文件路径保持一致，否则菜单会显示但页面无法加载。
+
 ## 默认账号
 
 - 账号：`superAdmin`
@@ -182,6 +245,11 @@ mvn -pl snowy-boot -am -DskipTests package
 cd snowy-admin-web
 npm run build
 ```
+
+更聚焦模板场景时，优先看：
+
+- `docs/template/template-smoke-checklist.md`
+- `docs/template/crud-module-checklist.md`
 
 ## 上游维护策略
 
