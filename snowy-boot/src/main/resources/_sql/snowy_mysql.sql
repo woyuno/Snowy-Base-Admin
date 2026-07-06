@@ -1,4 +1,6 @@
 SET NAMES utf8mb4;
+CREATE DATABASE IF NOT EXISTS `voidchain_vallet_admin` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `voidchain_vallet_admin`;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------

@@ -157,7 +157,7 @@ AI 新增模块时，优先遵循以下落位规则：
 
 默认本地配置：
 
-- 数据库：`snowy`
+- 数据库：`voidchain_vallet_admin`
 - 用户名：`root`
 - 密码：`root`
 
